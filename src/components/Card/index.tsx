@@ -1,15 +1,31 @@
-import cardBack from 'assets/cards/back.svg';
+import { DragEvent } from 'react';
+import type { CardData } from 'types';
 import { CardContainer, CardInner, CardFront, CardBack } from './Card.styles';
 
-function Card({ card, isFlipped, isMatched, onClick }) {
+type CardProps = {
+  cardData: CardData;
+  onCardClick: (id: string) => void;
+};
+
+function Card({ cardData, onCardClick }: CardProps) {
+  const { id, imageUrl, isFlipped, isMatched } = cardData;
+
+  const handleClick = () => {
+    if (!isFlipped && !isMatched) {
+      onCardClick(id);
+    }
+  };
+
+  const handleDragStart = (e: DragEvent<HTMLImageElement>) => {
+    e.preventDefault();
+  };
+
   return (
-    <CardContainer onClick={onClick}>
-      <CardInner isFlipped={isFlipped} isMatched={isMatched}>
-        <CardBack>
-          <img src={cardBack} alt='Card Back' />
-        </CardBack>
-        <CardFront isMatched={isMatched}>
-          <img src={card.src} alt={card.contentId} />
+    <CardContainer onClick={handleClick}>
+      <CardInner $isFlipped={isFlipped} $isMatched={isMatched}>
+        <CardBack />
+        <CardFront $isMatched={isMatched}>
+          <img src={imageUrl} alt='Card Content' draggable='false' onDragStart={handleDragStart} />
         </CardFront>
       </CardInner>
     </CardContainer>

@@ -1,17 +1,20 @@
+import { useGameStore } from 'store/useGameStore';
 import Card from '../Card';
 import { BoardGrid } from './Board.styles';
 
-function Board({ cards, flipped, matched, onCardClick, rows, cols }) {
+function Board() {
+  const cards = useGameStore((state) => state.cards);
+  const settings = useGameStore((state) => state.settings);
+  const flipCard = useGameStore((state) => state.flipCard);
+
+  if (!settings) {
+    return <div>Error: Game settings not loaded.</div>;
+  }
+
   return (
-    <BoardGrid rows={rows} cols={cols}>
+    <BoardGrid $gridSize={settings.gridSize}>
       {cards.map((card) => (
-        <Card
-          key={card.id}
-          card={card}
-          isFlipped={flipped.includes(card.id)}
-          isMatched={matched.includes(card.id)}
-          onClick={() => onCardClick(card.id)}
-        />
+        <Card key={card.id} cardData={card} onCardClick={flipCard} />
       ))}
     </BoardGrid>
   );
