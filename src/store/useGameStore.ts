@@ -2,10 +2,10 @@ import { create } from 'zustand';
 import { immer } from 'zustand/middleware/immer';
 import type { Difficulty, DifficultySettings, CardData, GameState, GameActions } from 'types';
 
-const difficultyMap: Record<Difficulty, DifficultySettings> = {
-  easy: { gridSize: 4, pairs: 8, limit: 8 },
-  medium: { gridSize: 6, pairs: 18, limit: 18 },
-  hard: { gridSize: 8, pairs: 32, limit: 32 },
+const difficultyGridSizes: Record<Difficulty, number> = {
+  easy: 4,
+  medium: 6,
+  hard: 8,
 };
 
 const shuffleArray = <T>(array: T[]): T[] => {
@@ -67,12 +67,17 @@ export const useGameStore = create<GameState & GameActions>()(
 
       set((state) => {
         state.difficulty = newDifficulty;
-        state.settings = difficultyMap[newDifficulty];
+
+        const gridSize = difficultyGridSizes[newDifficulty];
+        const pairs = gridSize * 2;
+        const limit = pairs;
+        const newSettings: DifficultySettings = { gridSize, pairs, limit };
+        state.settings = newSettings;
 
         if (currentPhase !== 'setup' || state.cards.length > 0) {
           Object.assign(state, initialState, {
             difficulty: newDifficulty,
-            settings: difficultyMap[newDifficulty],
+            settings: newSettings,
             player1Name: state.player1Name,
             player2Name: state.player2Name,
           });
