@@ -48,9 +48,9 @@ export const useGameStore = create<GameState & GameActions>()(
 
     setPlayerName: (player, name) => {
       set((state) => {
-        const safeName = name.trim() || (player === 1 ? 'Player 1' : 'Player 2');
-        if (player === 1) state.player1Name = safeName;
-        if (player === 2) state.player2Name = safeName;
+        const actualName = name.trim();
+        if (player === 1) state.player1Name = actualName;
+        if (player === 2) state.player2Name = actualName;
       });
     },
 
@@ -83,11 +83,22 @@ export const useGameStore = create<GameState & GameActions>()(
     },
 
     startRolling: () => {
-      if (!get().difficulty) {
+      const { difficulty, player1Name, player2Name } = get();
+
+      if (!difficulty) {
         alert('Please select a difficulty level first!');
         return;
       }
-      set({ gamePhase: 'rolling' });
+
+      set((state) => {
+        if (!player1Name) {
+          state.player1Name = 'Player 1';
+        }
+        if (!player2Name) {
+          state.player2Name = 'Player 2';
+        }
+        state.gamePhase = 'rolling';
+      });
     },
 
     rollToStart: () => {
