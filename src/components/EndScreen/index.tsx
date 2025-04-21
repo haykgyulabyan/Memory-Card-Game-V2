@@ -13,13 +13,12 @@ function EndScreen() {
   const player2Time = useGameStore((state) => state.player2TimeElapsed);
   const resetGame = useGameStore((state) => state.resetGame);
 
-  let winnerText;
+  let winnerText = `${player2Name} wins!`;
   let winnerClass = '';
+
   if (player1Score > player2Score) {
     winnerText = `${player1Name} wins!`;
-  } else if (player2Score > player1Score) {
-    winnerText = `${player2Name} wins!`;
-  } else {
+  } else if (player2Score === player1Score) {
     winnerText = "It's a tie!";
     winnerClass = 'tie';
   }
