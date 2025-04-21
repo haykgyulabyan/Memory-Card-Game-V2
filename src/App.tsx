@@ -14,9 +14,9 @@ function App() {
   const settings = useGameStore((state) => state.settings);
   const prepareGameBoard = useGameStore((state) => state.prepareGameBoard);
 
-  const imageQueryEnabled = gamePhase === 'loading_images' && !!settings?.limit;
+  const imageQueryEnabled = gamePhase === 'loading_images' && !!settings?.pairs;
 
-  const { data: imageData, isLoading, isError, error, refetch } = useFetchImages(settings?.limit, imageQueryEnabled);
+  const { data: imageData, isLoading, isError, error, refetch } = useFetchImages(settings?.pairs, imageQueryEnabled);
 
   useEffect(() => {
     if (gamePhase === 'loading_images' && imageData && !isLoading && !isError) {

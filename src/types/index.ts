@@ -12,7 +12,6 @@ export type Difficulty = 'easy' | 'medium' | 'hard';
 export type DifficultySettings = {
   gridSize: number;
   pairs: number;
-  limit: number;
 };
 
 export type CardData = {
