@@ -70,7 +70,7 @@ export const useGameStore = create<GameState & GameActions>()(
 
         const gridSize = difficultyGridSizes[newDifficulty];
         const pairs = (gridSize * gridSize) / 2;
-        const limit = gridSize * gridSize;
+        const limit = pairs;
         const newSettings: DifficultySettings = { gridSize, pairs, limit };
         state.settings = newSettings;
 
